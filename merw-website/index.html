@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MERW — Turkmen Restaurant, Tbilisi</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --black:#0b0704;
+    --black-2:#150e08;
+    --charcoal:#1d140c;
+    --gold:#c9a24a;
+    --gold-bright:#f0d383;
+    --gold-deep:#8a6a2a;
+    --red:#7c1420;
+    --red-bright:#a51e2c;
+    --beige:#efe3c8;
+    --beige-2:#e5d5ac;
+    --ink:#2b1d10;
+    --ink-soft:#4a3826;
+    --cream:#f6ecd6;
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--black);
+    color:var(--cream);
+    font-family:'Cormorant Garamond', serif;
+    font-size:19px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,.display{
+    font-family:'Cinzel', serif;
+    font-weight:600;
+    letter-spacing:0.02em;
+  }
+  a{color:inherit; text-decoration:none;}
+  img{display:block; max-width:100%;}
+  .wrap{max-width:1200px; margin:0 auto; padding:0 32px;}
+
+  /* ---------- Gul / diamond motif ---------- */
+  .gul-row{display:flex; align-items:center; justify-content:center; gap:14px; margin:0 auto;}
+  .gul-row svg{display:block;}
+  .gul-divider{padding:38px 0;}
+  .gul-divider.on-beige{opacity:0.9;}
+
+  /* ---------- Top nav ---------- */
+  header.topnav{
+    position:fixed; top:0; left:0; right:0; z-index:100;
+    background:rgba(11,7,4,0.0);
+    transition:background 0.35s ease, box-shadow 0.35s ease, padding 0.35s ease;
+    padding:22px 0;
+  }
+  header.topnav.scrolled{
+    background:rgba(11,7,4,0.92);
+    backdrop-filter:blur(6px);
+    box-shadow:0 1px 0 rgba(201,162,74,0.25);
+    padding:12px 0;
+  }
+  .nav-inner{display:flex; align-items:center; justify-content:space-between;}
+  .nav-brand{
+    font-family:'Cinzel', serif; font-weight:700; font-size:22px; letter-spacing:0.12em;
+    color:var(--gold-bright);
+  }
+  .nav-links{display:flex; gap:34px; list-style:none;}
+  .nav-links a{
+    font-family:'Cinzel', serif; font-size:13px; letter-spacing:0.09em;
+    color:var(--beige); position:relative; padding-bottom:4px;
+    transition:color 0.25s ease;
+  }
+  .nav-links a::after{
+    content:''; position:absolute; left:0; bottom:0; height:1px; width:0;
+    background:var(--gold-bright); transition:width 0.3s ease;
+  }
+  .nav-links a:hover, .nav-links a.active{color:var(--gold-bright);}
+  .nav-links a:hover::after, .nav-links a.active::after{width:100%;}
+  .nav-toggle{display:none; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none;}
+  .nav-toggle span{width:24px; height:2px; background:var(--gold-bright);}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    min-height:100vh;
+    display:flex; flex-direction:column; align-items:center; justify-content:center;
+    text-align:center; position:relative; overflow:hidden;
+    padding:140px 24px 80px;
+    background:
+      radial-gradient(ellipse at 50% 28%, rgba(201,162,74,0.16), transparent 60%),
+      var(--black);
+  }
+  .hero-logo{width:min(480px, 78vw); margin:0 auto;}
+  .hero-tagline{
+    font-family:'Cormorant Garamond', serif; font-style:italic;
+    color:var(--gold-bright); font-size:22px; letter-spacing:0.03em;
+    margin-top:6px;
+  }
+  .hero-sub{
+    max-width:560px; margin:22px auto 0; color:var(--beige-2); font-size:18px;
+  }
+  .hero-ctas{display:flex; gap:22px; margin-top:38px; flex-wrap:wrap; justify-content:center;}
+  .btn{
+    font-family:'Cinzel', serif; font-size:13px; letter-spacing:0.09em;
+    padding:15px 34px; border-radius:2px; cursor:pointer;
+    border:1px solid var(--gold);
+    transition:all 0.3s ease;
+    display:inline-block;
+  }
+  .btn-solid{background:linear-gradient(180deg, var(--gold-bright), var(--gold-deep)); color:var(--black); border-color:var(--gold-bright);}
+  .btn-solid:hover{filter:brightness(1.1); transform:translateY(-1px);}
+  .btn-outline{color:var(--gold-bright); background:transparent;}
+  .btn-outline:hover{background:rgba(201,162,74,0.1); border-color:var(--gold-bright);}
+  .scroll-cue{
+    position:absolute; bottom:34px; left:50%; transform:translateX(-50%);
+    width:1px; height:46px; background:linear-gradient(var(--gold), transparent);
+    opacity:0.6;
+  }
+
+  /* ---------- Category nav (sticky) ---------- */
+  .cat-nav{
+    position:sticky; top:0; z-index:60;
+    background:rgba(11,7,4,0.97);
+    border-bottom:1px solid rgba(201,162,74,0.28);
+    border-top:1px solid rgba(201,162,74,0.28);
+  }
+  .cat-nav-inner{
+    display:flex; gap:0; overflow-x:auto; justify-content:center;
+    scrollbar-width:none;
+  }
+  .cat-nav-inner::-webkit-scrollbar{display:none;}
+  .cat-btn{
+    font-family:'Cinzel', serif; font-size:13px; letter-spacing:0.08em;
+    color:var(--beige-2); white-space:nowrap;
+    padding:20px 26px; border-bottom:2px solid transparent;
+    transition:color 0.25s ease, border-color 0.25s ease;
+  }
+  .cat-btn:hover{color:var(--gold-bright);}
+  .cat-btn.active{color:var(--gold-bright); border-color:var(--red-bright);}
+
+  /* ---------- Menu sections ---------- */
+  section.menu-section{padding:86px 0 92px;}
+  section.menu-section.dark{background:var(--gold); color:var(--cream);}
+  section.menu-section.light{background:var(--beige); color:var(--ink);}
+
+  .section-head{text-align:center; max-width:640px; margin:0 auto 56px;}
+  .section-eyebrow{
+    font-family:'Cormorant Garamond', serif; font-style:italic;
+    font-size:17px; letter-spacing:0.02em;
+  }
+  .dark .section-eyebrow{color:var(--red);}
+  .light .section-eyebrow{color:var(--red);}
+  .section-title{font-size:clamp(30px, 4vw, 42px); margin-top:6px;}
+  .dark .section-title{color:var(--cream);}
+  .light .section-title{color:var(--ink);}
+  .section-rule{width:70px; height:2px; margin:20px auto 0; background:var(--red-bright);}
+
+  .card-grid{
+    display:grid; grid-template-columns:repeat(auto-fill, minmax(252px, 1fr));
+    gap:34px 30px;
+  }
+  .dish-card{
+    position:relative;
+    border:1px solid rgba(201,162,74,0.35);
+    padding:14px 14px 20px;
+    transition:transform 0.35s ease, box-shadow 0.35s ease, border-color 0.35s ease;
+  }
+  .dark .dish-card{background:var(--black-2);}
+  .light .dish-card{background:var(--cream); border-color:rgba(124,20,32,0.25);}
+  .dish-card:hover{transform:translateY(-5px); border-color:var(--gold-bright); box-shadow:0 18px 34px rgba(0,0,0,0.35);}
+  .light .dish-card:hover{box-shadow:0 18px 34px rgba(80,55,20,0.18);}
+  .dish-card .corner{
+    position:absolute; width:9px; height:9px; border:1px solid var(--gold);
+    transform:rotate(45deg); background:var(--red-bright);
+  }
+  .dish-card .corner.tl{top:-5px; left:-5px;}
+  .dish-card .corner.tr{top:-5px; right:-5px;}
+  .dish-img-wrap{width:100%; aspect-ratio:1/1; overflow:hidden;}
+  .dish-img-wrap img{width:100%; height:100%; object-fit:cover; transition:transform 0.6s ease;}
+  .dish-card:hover .dish-img-wrap img{transform:scale(1.06);}
+  .dish-body{padding-top:16px;}
+  .dish-name-row{display:flex; align-items:baseline; justify-content:space-between; gap:10px;}
+  .dish-name{font-family:'Cinzel', serif; font-size:16px; font-weight:600; letter-spacing:0.02em;}
+  .dark .dish-name{color:var(--gold-bright);}
+  .light .dish-name{color:var(--red);}
+  .dish-price{font-family:'Cinzel', serif; font-size:13px; white-space:nowrap;}
+  .dark .dish-price{color:var(--beige-2);}
+  .light .dish-price{color:var(--ink-soft);}
+  .dish-desc{font-style:italic; font-size:16px; margin-top:8px;}
+  .dark .dish-desc{color:var(--beige-2);}
+  .light .dish-desc{color:var(--ink-soft);}
+  .flag-note{
+    display:inline-block; margin-top:8px; font-family:'Cinzel',serif; font-size:10px;
+    letter-spacing:0.06em; color:var(--red-bright); border:1px solid var(--red-bright);
+    padding:3px 7px;
+  }
+
+  /* ---------- About strip ---------- */
+  .about{
+    background:var(--charcoal); padding:80px 0; text-align:center;
+  }
+  .about .section-title{color:var(--cream); margin-bottom:22px;}
+  .about p{max-width:680px; margin:0 auto; color:var(--beige-2); font-size:19px;}
+
+  /* ---------- Footer ---------- */
+  footer{background:var(--black-2); padding:70px 0 30px; border-top:1px solid rgba(201,162,74,0.25);}
+  .footer-grid{
+    display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:50px; padding-bottom:50px;
+  }
+  .footer-brand{font-family:'Cinzel', serif; font-size:24px; letter-spacing:0.1em; color:var(--gold-bright);}
+  .footer-brand-sub{font-style:italic; color:var(--beige-2); margin-top:8px; font-size:17px;}
+  footer h4{font-family:'Cinzel', serif; font-size:14px; letter-spacing:0.08em; color:var(--gold); margin-bottom:16px;}
+  footer p, footer address{font-style:normal; color:var(--beige-2); font-size:17px; margin-bottom:8px;}
+  .footer-bottom{
+    border-top:1px solid rgba(201,162,74,0.18); padding-top:24px;
+    display:flex; justify-content:space-between; flex-wrap:wrap; gap:12px;
+    font-size:14px; color:#8a7a5f;
+  }
+
+  @media (max-width:760px){
+    .nav-links{
+      position:fixed; top:0; right:0; height:100vh; width:min(280px, 78vw);
+      background:var(--black-2); flex-direction:column; justify-content:center;
+      align-items:flex-start; padding:40px; gap:26px;
+      transform:translateX(100%); transition:transform 0.35s ease;
+      border-left:1px solid rgba(201,162,74,0.3);
+    }
+    .nav-links.open{transform:translateX(0);}
+    .nav-toggle{display:flex;}
+    .footer-grid{grid-template-columns:1fr;}
+    .hero{padding-top:120px;}
+  }
+</style>
+</head>
+<body>
+
+<header class="topnav" id="topnav">
+  <div class="wrap nav-inner">
+    <a href="#home" class="nav-brand">MERW</a>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#main" class="cat-link">Main &amp; Grill</a></li>
+      <li><a href="#appetizers" class="cat-link">Appetizers</a></li>
+      <li><a href="#soups" class="cat-link">Soups</a></li>
+      <li><a href="#desserts" class="cat-link">Desserts</a></li>
+      <li><a href="#drinks" class="cat-link">Drinks</a></li>
+      <li><a href="#contact">Find Us</a></li>
+    </ul>
+    <button class="nav-toggle" id="navToggle" aria-label="Menu"><span></span><span></span><span></span></button>
+  </div>
+</header>
+
+<section class="hero" id="home">
+  <img src="images/logo.png" alt="MERW Turkmen Restaurant, Tbilisi" class="hero-logo">
+  <p class="hero-sub">Recipes carried down the Silk Road from the ancient city of Merv — grilled over coals, steamed in copper, and baked in clay, now served in the heart of Tbilisi.</p>
+  <div class="hero-ctas">
+    <a href="#main" class="btn btn-solid">View the Menu</a>
+    <a href="#contact" class="btn btn-outline">Find Us</a>
+  </div>
+  <div class="scroll-cue"></div>
+</section>
+
+<nav class="cat-nav" id="catNav">
+  <div class="wrap cat-nav-inner">
+    <a href="#main" class="cat-btn cat-link" data-target="main">Main Dishes &amp; Grill</a>
+    <a href="#appetizers" class="cat-btn cat-link" data-target="appetizers">Appetizers</a>
+    <a href="#soups" class="cat-btn cat-link" data-target="soups">Soups</a>
+    <a href="#desserts" class="cat-btn cat-link" data-target="desserts">Desserts</a>
+    <a href="#drinks" class="cat-btn cat-link" data-target="drinks">Drinks</a>
+  </div>
+</nav>
+
+<section class="menu-section dark" id="main">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">From the coals and the tandyr</div>
+      <h2 class="section-title">Main Dishes &amp; Grill</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="card-grid" data-category="main"></div>
+  </div>
+</section>
+
+<div class="gul-divider on-dark" style="background:var(--black);"></div>
+
+<section class="menu-section light" id="appetizers">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">To begin the table</div>
+      <h2 class="section-title">Appetizers &amp; Salads</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="card-grid" data-category="appetizers"></div>
+  </div>
+</section>
+
+<section class="menu-section dark" id="soups">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">Slow-simmered</div>
+      <h2 class="section-title">Soups</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="card-grid" data-category="soups"></div>
+  </div>
+</section>
+
+<section class="menu-section light" id="desserts">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">To finish, sweetly</div>
+      <h2 class="section-title">Desserts</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="card-grid" data-category="desserts"></div>
+  </div>
+</section>
+
+<section class="menu-section dark" id="drinks">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow">To drink</div>
+      <h2 class="section-title">Drinks</h2>
+      <div class="section-rule"></div>
+    </div>
+    <div class="card-grid" data-category="drinks"></div>
+  </div>
+</section>
+
+<section class="about">
+  <div class="wrap">
+    <h2 class="section-title">The City of Merv</h2>
+    <p>Once one of the great oasis cities of the Silk Road, Merv stood where caravans from Persia, China and the steppe crossed paths. Our kitchen carries that same spirit of hospitality — bread from the tandyr, meat from the coals, and a table built for sharing.</p>
+  </div>
+</section>
+
+<footer id="contact">
+  <div class="wrap">
+    <div class="footer-grid">
+      <div>
+        <div class="footer-brand">MERW</div>
+        <div class="footer-brand-sub">Turkmen Restaurant — Tbilisi</div>
+        <p style="margin-top:18px; max-width:340px;"></p>
+      </div>
+      <div>
+        <h4>Visit</h4>
+        <address>Tbilisi, Georgia<br> 2 Kote Marjanishvili St </address> 
+        <p>54 Dimitri Uznadze St</p>
+        <p style="margin-top:10px;"> 571 05 64 09 </p>
+        
+      </div>
+      <div>
+        <h4>Hours</h4>
+        <p>11 AM - 11 PM </p>
+        <h4 style="margin-top:22px;">Follow Us</h4>
+        <a href="https://www.instagram.com/ron_li003?igsi=MXR5a3dseWF6ZWg2Zw%3D%3D&utm_source=qr%3EVisit%20Example%20Website%3C%2Fa%3E%20%20%20%20%20%20%3C%2Fdiv%3E%20%20%20%20%3C%2Fdiv%3E%20%20%20%20%3Cdiv%20class%3D"style="color:var(--red-bright);">Instagram</a>
+        <p></p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; <span id="year"></span> MERW Turkmen Restaurant, Tbilisi</span>
+      <span></span>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* ---------------- Gul / carpet-motif divider (drawn once, reused) ---------------- */
+function gulSVG(size){
+  const s = size;
+  return `<svg width="${s}" height="${s}" viewBox="0 0 40 40">
+    <rect x="20" y="2" width="24" height="24" transform="rotate(45 20 20)"
+      fill="#7c1420" stroke="#c9a24a" stroke-width="1.4"/>
+    <rect x="20" y="11" width="10" height="10" transform="rotate(45 20 20)"
+      fill="none" stroke="#f0d383" stroke-width="1"/>
+  </svg>`;
+}
+document.querySelectorAll('.gul-divider').forEach(el=>{
+  let row = document.createElement('div');
+  row.className = 'wrap gul-row';
+  let sizes = [10,14,20,28,20,14,10];
+  row.innerHTML = sizes.map(s=>gulSVG(s)).join('');
+  el.appendChild(row);
+});
+
+/* ---------------- Menu data ---------------- */
+/* Fill in "price" fields (e.g. "12 ₾") as you finalize your price list — leave blank to hide. */
+const dishes = [
+  // MAIN DISHES + GRILL
+  {cat:'main', name:'Beef Manti', img:'beef_manti.jpeg', desc:'Hand-folded dumplings, steamed with spiced beef and onion.', price:''},
+  {cat:'main', name:'Beef Kebab', img:'kebab_beef.jpeg', desc:'Skewered beef, grilled over open coals until char-kissed.', price:''},
+  {cat:'main', name:'Chicken Kebab', img:'chicken_kebab.jpeg', desc:'Marinated chicken, grilled and served sizzling.', price:''},
+  {cat:'main', name:'Beef Shashlik', img:'beef_shashlik.jpeg', desc:'Thick-cut beef skewers, slow-grilled the traditional way.', price:''},
+ {cat:'main', name:'Pumpkin Manti', img:'pumkin_manti.jpeg', desc:'Steamed dumplings filled with sweet, spiced pumpkin.', price:''},
+  {cat:'main', name:'Mixed Shashlik', img:'shashlik.jpeg', desc:'A hearty mix of skewered meats, straight off the grill.', price:''},
+  {cat:'main', name:'Lamb Chops', img:'lamp_chops.jpeg', desc:'Grilled lamb chops with a golden, herb-crusted edge.', price:''},
+  {cat:'main', name:'Chicken Wings', img:'chicken_wings.jpeg', desc:'Char-grilled wings, crisp outside and tender within.', price:''},
+    {cat:'main', name:'Lamb Kebab', img:'kebab_lamb.jpeg', desc:'Tender lamb, marinated and fired on the grill.', price:''},
+  {cat:'main', name:'Beef Meatballs', img:'meatballs.jpeg', desc:'Spiced beef meatballs, seared and served warm.', price:''},
+  {cat:'main', name:'Beef Pilaf', img:'beef_pilav.jpeg', desc:'Slow-cooked rice with beef, carrot and warm spice.', price:''},
+  {cat:'main', name:'Beef Stew', img:'beef_stew.jpeg', desc:'Beef simmered low and slow with garden vegetables.', price:''},
+  {cat:'main', name:'Yakhni', img:'yakhni.jpeg', desc:'Lamb shank, braised until tender in its own rich broth.', price:''},
+  {cat:'main', name:'Kakmach', img:'kakmatch.jpeg', desc:'Sizzling beef strips with peppers and onion, straight off the pan.', price:''},
+  {cat:'main', name:'Carp Fillet', img:'Carp_fillet.jpeg', desc:'Pan-seared carp fillet, delicate and lightly spiced.', price:''},
+  {cat:'main', name:'Cheburek', img:'Cheburek.jpeg', desc:'Crisp fried pastry, filled with seasoned minced meat.', price:''},
+  {cat:'main', name:'Fitchi', img:'Fitchi.jpeg', desc:'Small baked pies with a golden, savory-glazed crust.', price:''},
+  {cat:'main', name:'Ishlekli', img:'Ishlekli.jpeg', desc:'A large baked pie of thin dough and spiced meat, torn and shared at the table.', price:''},
+  {cat:'main', name:'Classic Samsa', img:'samsa_classic.jpeg', desc:'Flaky pastry parcels, baked around spiced meat.', price:''},
+  {cat:'main', name:'Tamdyr Samsa', img:'samsa_in_tamdyr.jpeg', desc:'Samsa baked the traditional way, pressed onto the walls of a clay tamdyr oven.', price:''},
+  {cat:'main', name:'Beef Dumplings', img:'beef_dumplings.jpeg', desc:'Boiled dumplings packed with seasoned beef, served with butter and herbs.', price:''},
+  {cat:'main', name:'Fried Dumplings', img:'fried_dumplings.jpeg', desc:'Pan-fried dumplings, crisp outside and juicy within.', price:''},
+
+  // APPETIZERS & SALADS
+  {cat:'appetizers', name:'Steak Salad', img:'steak_salad.jpeg', desc:'Sliced grilled steak over fresh, crisp greens.', price:''},
+  {cat:'appetizers', name:'Chicken Steak Salad', img:'chiken_steak_salad.jpeg', desc:'Grilled chicken breast over a crisp garden salad.', price:''},
+  {cat:'appetizers', name:'Caesar Salad', img:'ceaser_salad.jpeg', desc:'Crisp romaine, parmesan and a classic Caesar dressing.', price:''},
+  {cat:'appetizers', name:'Greek Salad', img:'greek_salad.jpeg', desc:'Tomato, cucumber, olive and feta, simply dressed.', price:''},
+  {cat:'appetizers', name:'Shepherd\u2019s Salad', img:'shepred_salad.jpeg', desc:'Finely diced tomato, cucumber and pepper, dressed light.', price:''},
+  {cat:'appetizers', name:'Eggplant Salad', img:'eggplant_salad.jpeg', desc:'Smoky roasted eggplant with garlic and herbs.', price:''},
+  {cat:'appetizers', name:'Beetroot Salad', img:'beetroot_salad.jpeg', desc:'Beetroot dressed with garlic and walnut.', price:''},
+  {cat:'appetizers', name:'Beetroot Salad with Mayo', img:'beetroot_salad_with_mayo.jpeg', desc:'Beetroot and garlic, folded into a creamy dressing.', price:''},
+  {cat:'appetizers', name:'Olivier Salad', img:'alivia_salad.jpeg', desc:'The classic potato salad with egg, pickle and pea.', price:''},
+  {cat:'appetizers', name:'Varavsha Salad', img:'salad_varavsha.jpeg', desc:'A house salad of fresh vegetables and herbs.', price:''},
+  {cat:'appetizers', name:'Korean-Style Carrot Salad', img:'carrott.jpeg', desc:'Shredded carrot in a tangy, spiced dressing.', price:''},
+  {cat:'appetizers', name:'Mixed Pickles', img:'mixed_pickeles.jpeg', desc:'An assortment of house-pickled vegetables.', price:''},
+  {cat:'appetizers', name:'French Fries', img:'fries.jpeg', desc:'Golden, crisp-cut potatoes.', price:''},
+  {cat:'appetizers', name:'Traditional Tamdyr Bread', img:'traditional_bread.jpeg', desc:'Fresh flatbread, baked in a clay tamdyr oven.', price:''},
+  {cat:'appetizers', name:'Herb Salad', img:'WhatsApp_Image_20260828_at_4_22_19_PM.jpeg', desc:'Fresh herbs with corn and olive.', price:''},
+
+  // SOUPS
+  {cat:'soups', name:'Beef Soup', img:'beef_soup.jpeg', desc:'A warming broth of beef and root vegetables.', price:''},
+  {cat:'soups', name:'Lagman Soup', img:'lagman_Soup.jpeg', desc:'Hand-pulled noodles in a spiced meat and vegetable broth.', price:''},
+  {cat:'soups', name:'Lentil Soup', img:'lentil_soup.jpeg', desc:'Red lentils, simmered smooth and warmly spiced.', price:''},
+  {cat:'soups', name:'Lamb Broth Soup', img:'lamb_broth_soup.jpeg', desc:'A clear, slow-simmered lamb broth.', price:''},
+  {cat:'soups', name:'Dograma', img:'Dograma.jpeg', desc:'Toasted bread, crumbled into a rich meat broth — a Turkmen classic.', price:''},
+  {cat:'soups', name:'Dumplings in Broth', img:'beef_dumplings_in_broth.jpeg', desc:'Small beef dumplings, simmered in a light, herbed broth.', price:''},
+
+  // DESSERTS
+  {cat:'desserts', name:'Classic Baklava', img:'classic_baklava.jpeg', desc:'Layers of crisp filo, walnut and honey syrup.', price:''},
+  {cat:'desserts', name:'Nest Baklava', img:'nest_baklava.jpeg', desc:'Shredded pastry shaped into golden nests, filled with nuts.', price:''},
+  {cat:'desserts', name:'Burma Baklava', img:'burma_baklava.jpeg', desc:'Rolled filo pastry, baked golden and syrup-soaked.', price:''},
+  {cat:'desserts', name:'Mussel Baklava', img:'mussel_baklava.jpeg', desc:'A shell-shaped baklava, delicate and honey-soaked.', price:''},
+  {cat:'desserts', name:'Milky Baklava', img:'milky_baklava_4gel.jpeg', desc:'A softer baklava, soaked in sweet milk syrup.', price:'4 \u20be'},
+  {cat:'desserts', name:'Pistachio Baklava', img:'pistachio_baklava_6gel.jpeg', desc:'Baklava layered generously with crushed pistachio.', price:'6 \u20be'},
+  {cat:'desserts', name:'Signature Baklava', img:'new_baklava.jpeg', desc:'Our newest baklava.', price:''},
+  {cat:'desserts', name:'Kadaif', img:'kadaif.jpeg', desc:'Shredded pastry threads, baked golden and layered with nuts.', price:''},
+  {cat:'desserts', name:'Honey Cake', img:'honey_cake.jpeg', desc:'Delicate honey-spiced layers with a soft cream filling.', price:''},
+  {cat:'desserts', name:'Chocolate Honey Cake', img:'chocholate_honey_cake.jpeg', desc:'Honey cake layers, folded with rich chocolate cream.', price:''},
+
+  // DRINKS
+  {cat:'drinks', name:'Ayran', img:'ayran.jpeg', desc:'A cool, salted yogurt drink.', price:''},
+  {cat:'drinks', name:'Compote', img:'compot.jpeg', desc:'Fruit, gently stewed into a light, sweet drink.', price:''},
+  {cat:'drinks', name:'Fresh Juice', img:'juice.jpeg', desc:'Fresh-pressed juice, made to order.', price:''},
+  {cat:'drinks', name:'Fresh Juice (Small)', img:'small_juice.jpeg', desc:'A smaller pour of fresh-pressed juice.', price:''},
+  {cat:'drinks', name:'Mojito', img:'mojito.jpeg', desc:'Mint, lime and soda, cooling and bright.', price:''},
+  {cat:'drinks', name:'Beer', img:'beer.jpeg', desc:'Cold beer, on request.', price:''},
+];
+
+function renderCard(d){
+  const priceHtml = d.price ? `<span class="dish-price">${d.price}</span>` : '';
+  const flagHtml = d.flag ? `<div class="flag-note">${d.flag}</div>` : '';
+  return `
+  <div class="dish-card">
+    <span class="corner tl"></span><span class="corner tr"></span>
+    <div class="dish-img-wrap"><img src="images/${d.img}" alt="${d.name}" loading="lazy"></div>
+    <div class="dish-body">
+      <div class="dish-name-row">
+        <span class="dish-name">${d.name}</span>
+        ${priceHtml}
+      </div>
+      <p class="dish-desc">${d.desc}</p>
+      ${flagHtml}
+    </div>
+  </div>`;
+}
+
+document.querySelectorAll('.card-grid').forEach(grid=>{
+  const cat = grid.dataset.category;
+  grid.innerHTML = dishes.filter(d=>d.cat===cat).map(renderCard).join('');
+});
+
+/* ---------------- Nav scroll state ---------------- */
+const topnav = document.getElementById('topnav');
+window.addEventListener('scroll', ()=>{
+  topnav.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+/* ---------------- Mobile nav toggle ---------------- */
+const navToggle = document.getElementById('navToggle');
+const navLinks = document.getElementById('navLinks');
+navToggle.addEventListener('click', ()=> navLinks.classList.toggle('open'));
+navLinks.querySelectorAll('a').forEach(a=> a.addEventListener('click', ()=> navLinks.classList.remove('open')));
+
+/* ---------------- Scrollspy for category nav + top nav links ---------------- */
+const sections = ['main','appetizers','soups','desserts','drinks'].map(id=>document.getElementById(id));
+const catLinks = document.querySelectorAll('.cat-link');
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      const id = entry.target.id;
+      catLinks.forEach(l=>{
+        l.classList.toggle('active', l.getAttribute('href') === '#'+id);
+      });
+    }
+  });
+}, {rootMargin:'-45% 0px -50% 0px'});
+sections.forEach(s=> s && observer.observe(s));
+
+document.getElementById('year').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>
